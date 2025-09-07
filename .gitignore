@@ -1,0 +1,10 @@
+*
+
+!README.md
+!.gitignore
+
+!HW1/
+HW1/**
+
+!HW1/codes/
+!HW1/codes/**
