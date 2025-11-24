@@ -19,3 +19,10 @@ mid_term/**
 !mid_term/figs/**
 !mid_term/misc/
 !mid_term/misc/**
+
+!Mid_2/
+# Include everything in Mid_2 except model weights
+!Mid_2/
+!Mid_2/**
+Mid_2/**/*.pth
+Mid_2/**/*.pt

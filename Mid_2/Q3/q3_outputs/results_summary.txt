@@ -1,0 +1,33 @@
+ResNet on CIFAR-10: Results Summary
+============================================================
+
+ARCHITECTURE:
+------------------------------------------------------------
+Type: Lightweight ResNet with explicit skip connections
+Residual Blocks: [1, 1, 1] (3 total)
+Channels: 32 -> 64 -> 128
+Kernel Sizes: 3x3
+Strides: Layer1=1, Layer2=2, Layer3=2
+Activation: ReLU
+Normalization: Batch Normalization
+Total Parameters: 308,650
+
+TRAINING DETAILS:
+------------------------------------------------------------
+Epochs: 15
+Batch Size: 64
+Learning Rate: 0.1
+Optimizer: SGD (momentum=0.9)
+L2 Regularization: 0.0001
+Data Augmentation: Random Flip + Random Crop
+
+RESULTS:
+------------------------------------------------------------
+Best Validation Accuracy: 85.95%
+Final Test Accuracy: 85.36%
+
+PERFORMANCE OBSERVATIONS:
+------------------------------------------------------------
+Training Range: 39.36% - 87.81%
+Validation Range: 45.97% - 85.95%
+
