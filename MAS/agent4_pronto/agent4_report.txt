@@ -1,0 +1,47 @@
+
+======================================================================
+AGENT 4: SCHEDULING OPTIMIZER
+======================================================================
+
+Day: 45
+Appliances: Washing Machine, Dishwasher, Oven, Microwave, TV, Computer
+
+ORIGINAL SCHEDULE:
+  Washing Machine: Hour 19
+  Dishwasher: Hour 7
+  Oven: Hour 14
+  Microwave: Hour 24
+  TV: Hour 12
+  Computer: Hour 1
+
+Baseline Cost: $0.4258
+
+──────────────────────────────────────────────────────────────────────
+LINEAR PROGRAMMING:
+  Cost: $0.3341
+  Savings: $0.0918 (21.5%)
+
+  Washing Machine: Hour 3, Cost $0.0557
+  Dishwasher: Hour 3, Cost $0.0558
+  Oven: Hour 3, Cost $0.0558
+  Microwave: Hour 3, Cost $0.0557
+  TV: Hour 3, Cost $0.0555
+  Computer: Hour 3, Cost $0.0554
+
+──────────────────────────────────────────────────────────────────────
+RL GREEDY:
+  Cost: $0.3491
+  Savings: $0.0767 (18.0%)
+
+  Washing Machine: Hour 3, Cost $0.0557
+  Dishwasher: Hour 2, Cost $0.0570
+  Oven: Hour 1, Cost $0.0588
+  Microwave: Hour 1, Cost $0.0587
+  TV: Hour 1, Cost $0.0585
+  Computer: Hour 5, Cost $0.0603
+
+──────────────────────────────────────────────────────────────────────
+LP vs RL Gap: $0.0150
+Annual Savings (300 uses): $27.53
+
+======================================================================

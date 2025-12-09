@@ -1,0 +1,17 @@
+
+AGENT 1: PRICE FORECASTING
+
+Training Set:
+  R²: 0.8585
+  MAE: $0.003780/kWh
+  RMSE: $0.004937/kWh
+
+Validation Set:
+  R²: 0.8596
+  MAE: $0.003873/kWh
+  RMSE: $0.005037/kWh
+
+Test Set:
+  R²: 0.8550
+  MAE: $0.003839/kWh
+  RMSE: $0.005030/kWh

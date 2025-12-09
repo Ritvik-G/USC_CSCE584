@@ -1,0 +1,16 @@
+{
+  "day": 45,
+  "appliances": [
+    "Washing Machine",
+    "Dishwasher",
+    "Oven",
+    "Microwave",
+    "TV",
+    "Computer"
+  ],
+  "baseline_cost": 0.4258211886372421,
+  "lp_cost": 0.33406478056661204,
+  "rl_cost": 0.34907912634899185,
+  "lp_savings": 0.09175640807063007,
+  "rl_savings": 0.07674206228825026
+}

@@ -1,0 +1,86 @@
+
+======================================================================
+AGENT 3: APPLIANCE PROFILING
+======================================================================
+
+Total Records: 100,000
+Unique Appliances: 10
+Schedulable: 2
+
+SCHEDULABLE APPLIANCES:
+Dishwasher, Washing Machine
+
+APPLIANCE PROFILES:
+
+
+Air Conditioning (ESSENTIAL):
+  Avg Energy: 3.500 kWh
+  Est Power: 3.49 kW
+  Est Duration: 1.0 hours
+  Peak Hours: 23, 6, 15
+  Schedulable: No
+
+Computer (NECESSARY):
+  Avg Energy: 1.095 kWh
+  Est Power: 0.37 kW
+  Est Duration: 3.0 hours
+  Peak Hours: 1, 19, 2
+  Schedulable: No
+
+Dishwasher (EXPENDABLE):
+  Avg Energy: 1.103 kWh
+  Est Power: 0.55 kW
+  Est Duration: 2.0 hours
+  Peak Hours: 7, 12, 17
+  Schedulable: Yes
+
+Fridge (ESSENTIAL):
+  Avg Energy: 0.298 kWh
+  Est Power: 0.30 kW
+  Est Duration: 24.0 hours
+  Peak Hours: 20, 3, 22
+  Schedulable: No
+
+Heater (ESSENTIAL):
+  Avg Energy: 3.487 kWh
+  Est Power: 3.48 kW
+  Est Duration: 1.0 hours
+  Peak Hours: 20, 8, 15
+  Schedulable: No
+
+Lights (ESSENTIAL):
+  Avg Energy: 1.087 kWh
+  Est Power: 1.08 kW
+  Est Duration: 1.0 hours
+  Peak Hours: 22, 24, 12
+  Schedulable: No
+
+Microwave (NECESSARY):
+  Avg Energy: 1.101 kWh
+  Est Power: 2.20 kW
+  Est Duration: 0.5 hours
+  Peak Hours: 24, 1, 20
+  Schedulable: No
+
+Oven (NECESSARY):
+  Avg Energy: 1.103 kWh
+  Est Power: 2.21 kW
+  Est Duration: 0.5 hours
+  Peak Hours: 14, 5, 22
+  Schedulable: No
+
+TV (NECESSARY):
+  Avg Energy: 1.097 kWh
+  Est Power: 0.37 kW
+  Est Duration: 3.0 hours
+  Peak Hours: 12, 5, 21
+  Schedulable: No
+
+Washing Machine (EXPENDABLE):
+  Avg Energy: 1.101 kWh
+  Est Power: 0.55 kW
+  Est Duration: 2.0 hours
+  Peak Hours: 19, 8, 12
+  Schedulable: Yes
+
+======================================================================

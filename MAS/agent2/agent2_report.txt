@@ -1,0 +1,17 @@
+
+AGENT 2: POWER FORECASTING
+
+Training Set:
+  R²: 0.2772
+  MAE: 0.667 kW
+  RMSE: 0.863 kW
+
+Validation Set:
+  R²: 0.1849
+  MAE: 0.734 kW
+  RMSE: 0.949 kW
+
+Test Set:
+  R²: 0.2964
+  MAE: 0.648 kW
+  RMSE: 0.849 kW

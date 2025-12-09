@@ -1,0 +1,527 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Multi-Agent System for Smart Appliance Scheduling: \\Proposed Methods and Experimental Setup}
+
+\author{\IEEEauthorblockN{Authors}
+\IEEEauthorblockA{\textit{Department} \\
+\textit{University}\\
+City, Country \\
+email@domain.com}}
+
+\maketitle
+
+\begin{abstract}
+This paper presents a comprehensive multi-agent system for intelligent appliance scheduling in smart homes. The proposed framework integrates four specialized agents: electricity price forecasting, household power consumption forecasting, appliance profiling, and scheduling optimization. We detail the mathematical formulations, algorithms, and experimental setup for each component, demonstrating how deep learning and optimization techniques can be combined to minimize energy costs while respecting operational constraints.
+\end{abstract}
+
+\section{Introduction}
+The proliferation of smart home technologies necessitates intelligent energy management systems that can optimize appliance scheduling based on dynamic electricity pricing and household consumption patterns. This paper presents a multi-agent architecture where each agent specializes in a specific aspect of the scheduling problem.
+
+\section{Proposed Multi-Agent Architecture}
+
+\subsection{System Overview}
+The proposed system consists of four interconnected agents:
+\begin{itemize}
+    \item \textbf{Agent 1:} Electricity Price Forecasting
+    \item \textbf{Agent 2:} Household Power Forecasting
+    \item \textbf{Agent 3:} Appliance Profiling
+    \item \textbf{Agent 4:} Scheduling Optimizer
+\end{itemize}
+
+Figure~\ref{fig:architecture} illustrates the information flow between agents, where Agents 1-3 provide forecasts and profiles to Agent 4, which performs the final scheduling optimization.
+
+\section{Agent 1: Electricity Price Forecasting}
+
+\subsection{Problem Formulation}
+Agent 1 predicts the electricity price $p_t \in \mathbb{R}^+$ (in \$/kWh) at hour $t$ on day $d$, where $d \in [1, 365]$ and $t \in [1, 24]$.
+
+\subsection{Feature Engineering}
+To capture the cyclical nature of time, we employ sinusoidal transformations:
+
+\begin{equation}
+\mathbf{x}_{hour} = \begin{bmatrix}
+\sin\left(\frac{2\pi t}{24}\right) \\
+\cos\left(\frac{2\pi t}{24}\right)
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\mathbf{x}_{day} = \begin{bmatrix}
+\sin\left(\frac{2\pi d}{365}\right) \\
+\cos\left(\frac{2\pi d}{365}\right)
+\end{bmatrix}
+\end{equation}
+
+The complete feature vector is:
+\begin{equation}
+\mathbf{x} = \left[\mathbf{x}_{hour}^T, \mathbf{x}_{day}^T, \frac{t}{24}, \frac{d}{365}\right]^T \in \mathbb{R}^6
+\end{equation}
+
+\subsection{Neural Network Architecture}
+We employ a feed-forward neural network with the following architecture:
+
+\begin{equation}
+f(\mathbf{x}) = \mathbf{W}_4 \cdot \sigma(\mathbf{W}_3 \cdot \sigma(\mathbf{W}_2 \cdot \sigma(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2) + \mathbf{b}_3) + b_4
+\end{equation}
+
+where:
+\begin{itemize}
+    \item Input layer: 6 neurons
+    \item Hidden layer 1: 64 neurons
+    \item Hidden layer 2: 32 neurons
+    \item Hidden layer 3: 16 neurons
+    \item Output layer: 1 neuron
+    \item Activation function: $\sigma(z) = \max(0, z)$ (ReLU)
+\end{itemize}
+
+\subsection{Training Procedure}
+The network is trained using the Adam optimizer to minimize the Mean Squared Error (MSE) loss:
+
+\begin{equation}
+\mathcal{L}_{MSE} = \frac{1}{N}\sum_{i=1}^{N}(y_i - \hat{y}_i)^2
+\end{equation}
+
+where $y_i$ is the actual price and $\hat{y}_i$ is the predicted price.
+
+\subsection{Data Normalization}
+Both features and targets are standardized using:
+
+\begin{equation}
+z = \frac{x - \mu}{\sigma}
+\end{equation}
+
+where $\mu$ and $\sigma$ are the mean and standard deviation computed from the training set.
+
+\section{Agent 2: Household Power Forecasting}
+
+\subsection{Problem Formulation}
+Agent 2 predicts household power consumption $P_t$ (in kW) at hour $t$ on day $d$.
+
+\subsection{Enhanced Feature Engineering}
+Building upon Agent 1's features, we add monthly cyclical encoding:
+
+\begin{equation}
+m = \left\lceil \frac{d}{30.5} \right\rceil
+\end{equation}
+
+\begin{equation}
+\mathbf{x}_{month} = \begin{bmatrix}
+\sin\left(\frac{2\pi m}{12}\right) \\
+\cos\left(\frac{2\pi m}{12}\right)
+\end{bmatrix}
+\end{equation}
+
+The complete feature vector becomes:
+\begin{equation}
+\mathbf{x} = \left[\mathbf{x}_{hour}^T, \mathbf{x}_{day}^T, \mathbf{x}_{month}^T, \frac{t}{24}, \frac{d}{365}\right]^T \in \mathbb{R}^8
+\end{equation}
+
+\subsection{Data Aggregation}
+Minute-level power consumption data is aggregated to hourly resolution:
+
+\begin{equation}
+P_{d,t} = \frac{1}{|\mathcal{T}_{d,t}|}\sum_{i \in \mathcal{T}_{d,t}} P_i
+\end{equation}
+
+where $\mathcal{T}_{d,t}$ is the set of all minute-level readings within hour $t$ of day $d$.
+
+\subsection{Neural Network Architecture}
+Similar to Agent 1, but adapted for 8 input features:
+\begin{itemize}
+    \item Input layer: 8 neurons
+    \item Hidden layers: 64 $\rightarrow$ 32 $\rightarrow$ 16 neurons
+    \item Output layer: 1 neuron
+    \item Activation: ReLU
+    \item Optimizer: Adam
+\end{itemize}
+
+\section{Agent 3: Appliance Profiling}
+
+\subsection{Appliance Categorization}
+Appliances are classified into three categories:
+
+\begin{equation}
+C(a) = \begin{cases}
+\text{ESSENTIAL} & \text{if } a \in \mathcal{A}_E \\
+\text{NECESSARY} & \text{if } a \in \mathcal{A}_N \\
+\text{EXPENDABLE} & \text{if } a \in \mathcal{A}_X
+\end{cases}
+\end{equation}
+
+where:
+\begin{align}
+\mathcal{A}_E &= \{\text{Fridge, Heater, AC, Lights}\} \\
+\mathcal{A}_N &= \{\text{Oven, Microwave, TV, Computer}\} \\
+\mathcal{A}_X &= \{\text{Washing Machine, Dishwasher}\}
+\end{align}
+
+\subsection{Statistical Profile Construction}
+For each appliance $a$, we compute:
+
+\subsubsection{Energy Statistics}
+\begin{align}
+E_{avg}(a) &= \frac{1}{N_a}\sum_{i=1}^{N_a} E_i \\
+E_{std}(a) &= \sqrt{\frac{1}{N_a-1}\sum_{i=1}^{N_a}(E_i - E_{avg}(a))^2}
+\end{align}
+
+\subsubsection{Hourly Usage Frequency}
+\begin{equation}
+f_t(a) = \frac{|\{i : h_i = t, a_i = a\}|}{N_a}
+\end{equation}
+
+where $h_i$ is the hour of occurrence $i$ and $N_a$ is the total number of occurrences for appliance $a$.
+
+\subsubsection{Peak Hours Identification}
+\begin{equation}
+\mathcal{H}_{peak}(a) = \text{argtop-k}_{t \in [1,24]} f_t(a)
+\end{equation}
+
+where argtop-k returns the $k$ hours with highest frequency.
+
+\subsubsection{Power and Duration Estimation}
+For schedulable appliances, we estimate:
+
+\begin{equation}
+\hat{P}(a) = \frac{E_{avg}(a)}{\hat{\tau}(a)}
+\end{equation}
+
+where $\hat{\tau}(a)$ is the estimated duration:
+
+\begin{equation}
+\hat{\tau}(a) = \begin{cases}
+2.0 & \text{if } a \in \{\text{Washing Machine, Dishwasher}\} \\
+0.5 & \text{if } a \in \{\text{Oven, Microwave}\} \\
+3.0 & \text{if } a \in \{\text{TV, Computer}\} \\
+1.0 & \text{otherwise}
+\end{cases}
+\end{equation}
+
+\section{Agent 4: Scheduling Optimizer}
+
+\subsection{Problem Formulation}
+Given:
+\begin{itemize}
+    \item Set of appliances $\mathcal{A}$
+    \item Price forecast $p_t$ for $t \in [1, 24]$
+    \item Power forecast $P_t$ for $t \in [1, 24]$
+    \item Appliance profiles $\{E(a), \hat{P}(a), \hat{\tau}(a)\}_{a \in \mathcal{A}}$
+    \item Maximum power limit $P_{max}$
+\end{itemize}
+
+Objective: Minimize total cost while respecting power constraints.
+
+\subsection{Linear Programming Formulation}
+
+\subsubsection{Decision Variables}
+\begin{equation}
+x_{a,t} \in \{0, 1\}, \quad \forall a \in \mathcal{A}, t \in [1, 24]
+\end{equation}
+
+where $x_{a,t} = 1$ if appliance $a$ starts at hour $t$.
+
+\subsubsection{Objective Function}
+\begin{equation}
+\min \sum_{a \in \mathcal{A}} \sum_{t=1}^{24} x_{a,t} \cdot E(a) \cdot p_t
+\end{equation}
+
+\subsubsection{Constraints}
+\textbf{Single Execution Constraint:}
+\begin{equation}
+\sum_{t=1}^{24} x_{a,t} = 1, \quad \forall a \in \mathcal{A}
+\end{equation}
+
+\textbf{Power Limit Constraint:}
+\begin{equation}
+P_t + \sum_{a \in \mathcal{A}} \sum_{\substack{s=1 \\ s \leq t < s + \lceil\hat{\tau}(a)\rceil}}^{24} x_{a,s} \cdot \hat{P}(a) \leq P_{max}, \quad \forall t \in [1, 24]
+\end{equation}
+
+This constraint ensures that at any hour $t$, the baseline power consumption $P_t$ plus the power from all running appliances does not exceed $P_{max}$.
+
+\subsection{Reinforcement Learning Greedy Heuristic}
+
+\subsubsection{Algorithm}
+\begin{algorithm}
+\caption{RL Greedy Scheduling}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} $\mathcal{A}, \{p_t\}, \{P_t\}, P_{max}$
+\STATE Sort hours: $H_{sorted} = \text{argsort}_{t}(p_t)$
+\STATE Initialize: $S \gets \emptyset$, $H_{used} \gets \emptyset$
+\FOR{each $a \in \mathcal{A}$}
+    \STATE $cost_{best} \gets \infty$, $t_{best} \gets \text{null}$
+    \FOR{each $t \in H_{sorted}$}
+        \IF{$t \in H_{used}$ \textbf{or} $t + \lceil\hat{\tau}(a)\rceil > 24$}
+            \STATE \textbf{continue}
+        \ENDIF
+        \IF{$P_t + \hat{P}(a) > P_{max}$}
+            \STATE \textbf{continue}
+        \ENDIF
+        \STATE $cost \gets E(a) \cdot p_t$
+        \IF{$cost < cost_{best}$}
+            \STATE $cost_{best} \gets cost$, $t_{best} \gets t$
+        \ENDIF
+    \ENDFOR
+    \IF{$t_{best} \neq \text{null}$}
+        \STATE $S \gets S \cup \{(a, t_{best})\}$
+        \STATE $H_{used} \gets H_{used} \cup \{t_{best}, \ldots, t_{best} + \lceil\hat{\tau}(a)\rceil - 1\}$
+    \ENDIF
+\ENDFOR
+\STATE \textbf{Return:} $S$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Baseline Schedule}
+For comparison, we define a baseline schedule based on peak usage hours:
+
+\begin{equation}
+t_{baseline}(a) = \mathcal{H}_{peak}(a)[0]
+\end{equation}
+
+The baseline cost is:
+\begin{equation}
+C_{baseline} = \sum_{a \in \mathcal{A}} E(a) \cdot p_{t_{baseline}(a)}
+\end{equation}
+
+\subsection{Performance Metrics}
+We evaluate scheduling performance using:
+
+\subsubsection{Cost Reduction}
+\begin{equation}
+\Delta C = C_{baseline} - C_{optimized}
+\end{equation}
+
+\subsubsection{Savings Percentage}
+\begin{equation}
+\eta = \frac{\Delta C}{C_{baseline}} \times 100\%
+\end{equation}
+
+\subsubsection{Optimality Gap (LP vs. RL)}
+\begin{equation}
+\gamma = \frac{C_{RL} - C_{LP}}{C_{LP}} \times 100\%
+\end{equation}
+
+\section{Experimental Setup}
+
+\subsection{Datasets}
+
+\subsubsection{Price Forecasting Dataset}
+\begin{itemize}
+    \item \textbf{Source:} Historical electricity market data
+    \item \textbf{Features:} Day (1-365), Hour (1-24)
+    \item \textbf{Target:} Electricity Price (\$/MWh $\rightarrow$ \$/kWh)
+    \item \textbf{Size:} 8,760 hourly records (1 year)
+    \item \textbf{Split:} 70\% train, 15\% validation, 15\% test
+\end{itemize}
+
+\subsubsection{Power Forecasting Dataset}
+\begin{itemize}
+    \item \textbf{Source:} Individual household electric power consumption
+    \item \textbf{Resolution:} Minute-level aggregated to hourly
+    \item \textbf{Features:} Day, Hour, Seasonal indicators
+    \item \textbf{Measurements:} Global active power, voltage, intensity, sub-metering
+    \item \textbf{Split:} 70\% train, 15\% validation, 15\% test
+\end{itemize}
+
+\subsubsection{Device Consumption Dataset}
+\begin{itemize}
+    \item \textbf{Source:} Smart home appliance usage logs
+    \item \textbf{Features:} Date, Time, Home ID, Appliance Type, Energy Consumption, Temperature, Season
+    \item \textbf{Appliances:} 10 types across multiple homes
+    \item \textbf{Records:} Multiple observations per appliance type
+\end{itemize}
+
+\subsection{Training Configuration}
+
+\subsubsection{Neural Network Hyperparameters}
+\begin{table}[h]
+\centering
+\caption{Neural Network Training Parameters}
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Optimizer & Adam \\
+Learning rate & Default (0.001) \\
+Max iterations & 500 \\
+Hidden layers & [64, 32, 16] \\
+Activation & ReLU \\
+Batch size & Full batch \\
+Random seed & 42 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Evaluation Metrics}
+For forecasting agents (1 and 2):
+\begin{align}
+R^2 &= 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2} \\
+MAE &= \frac{1}{N}\sum_{i=1}^N |y_i - \hat{y}_i| \\
+RMSE &= \sqrt{\frac{1}{N}\sum_{i=1}^N (y_i - \hat{y}_i)^2} \\
+MAPE &= \frac{100\%}{N}\sum_{i=1}^N \left|\frac{y_i - \hat{y}_i}{y_i}\right|
+\end{align}
+
+\subsection{Scheduling Optimization Configuration}
+
+\subsubsection{Test Scenarios}
+\begin{itemize}
+    \item \textbf{Test Day:} Day 45 (mid-February)
+    \item \textbf{Appliances:} Washing Machine, Dishwasher, Oven, Microwave, TV, Computer
+    \item \textbf{Power Limit:} $P_{max} = 10.0$ kW
+    \item \textbf{Methods:} LP (exact), RL Greedy (heuristic), Baseline (peak hours)
+\end{itemize}
+
+\subsubsection{LP Solver Configuration}
+\begin{itemize}
+    \item \textbf{Library:} PuLP (Python Linear Programming)
+    \item \textbf{Solver:} CBC (COIN-OR Branch and Cut)
+    \item \textbf{Variable type:} Binary
+    \item \textbf{Problem type:} Mixed-Integer Linear Programming (MILP)
+\end{itemize}
+
+\subsection{Implementation Details}
+
+\subsubsection{Software Stack}
+\begin{itemize}
+    \item \textbf{Language:} Python 3.8+
+    \item \textbf{ML Framework:} scikit-learn 1.0+
+    \item \textbf{Optimization:} PuLP 2.6+
+    \item \textbf{Data Processing:} pandas 1.3+, NumPy 1.21+
+    \item \textbf{Visualization:} matplotlib 3.4+, seaborn 0.11+
+\end{itemize}
+
+\subsubsection{Agent Integration}
+The multi-agent system follows a sequential execution model:
+
+\begin{enumerate}
+    \item \textbf{Training Phase:}
+    \begin{itemize}
+        \item Agent 1 trains on price data
+        \item Agent 2 trains on power data
+        \item Agent 3 builds profiles from device data
+        \item All agents save models/profiles
+    \end{itemize}
+    
+    \item \textbf{Inference Phase:}
+    \begin{itemize}
+        \item Agent 4 loads trained agents 1-3
+        \item For target day $d$:
+        \begin{itemize}
+            \item Query Agent 1 for $\{p_t\}_{t=1}^{24}$
+            \item Query Agent 2 for $\{P_t\}_{t=1}^{24}$
+            \item Query Agent 3 for appliance profiles
+            \item Execute LP and RL optimization
+            \item Compare against baseline
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Performance Analysis}
+
+\subsubsection{Quantitative Metrics}
+\begin{itemize}
+    \item Forecasting accuracy ($R^2$, MAE, RMSE)
+    \item Scheduling cost reduction (\$/day)
+    \item Savings percentage (\%)
+    \item Optimality gap (LP vs. RL)
+    \item Annual savings projection (\$/year)
+\end{itemize}
+
+\subsubsection{Qualitative Analysis}
+\begin{itemize}
+    \item Appliance schedule visualization
+    \item Price-schedule alignment
+    \item Power constraint satisfaction
+    \item Temporal distribution of scheduled appliances
+\end{itemize}
+
+\subsection{Validation Strategy}
+
+\subsubsection{Model Validation}
+\begin{itemize}
+    \item Train-validation-test split (70-15-15)
+    \item Cross-validation on forecasting models
+    \item Residual analysis for prediction quality
+\end{itemize}
+
+\subsubsection{Scheduling Validation}
+\begin{itemize}
+    \item Constraint satisfaction verification
+    \item Feasibility checking (all appliances scheduled)
+    \item Solution optimality verification (LP solver status)
+    \item Heuristic quality assessment (RL vs. LP gap)
+\end{itemize}
+
+\section{Experimental Workflow}
+
+The complete experimental pipeline executes as follows:
+
+\begin{algorithm}
+\caption{Multi-Agent System Execution}
+\begin{algorithmic}[1]
+\STATE \textbf{Phase 1: Agent Training}
+\STATE Load price data $\rightarrow$ Train Agent 1 $\rightarrow$ Save model
+\STATE Load power data $\rightarrow$ Train Agent 2 $\rightarrow$ Save model
+\STATE Load device data $\rightarrow$ Build Agent 3 profiles $\rightarrow$ Save profiles
+\STATE
+\STATE \textbf{Phase 2: Integration Test}
+\STATE Load all trained agents
+\STATE Verify agent functionality with test queries
+\STATE
+\STATE \textbf{Phase 3: Scheduling Optimization}
+\FOR{each test scenario $(d, \mathcal{A}, P_{max})$}
+    \STATE $\{p_t\} \gets$ Agent1.predict\_day$(d)$
+    \STATE $\{P_t\} \gets$ Agent2.predict\_day$(d)$
+    \STATE profiles $\gets$ Agent3.get\_profiles$(\mathcal{A})$
+    \STATE $S_{baseline} \gets$ baseline\_schedule$(\mathcal{A},$profiles$)$
+    \STATE $S_{LP} \gets$ LP\_optimize$(d, \mathcal{A}, \{p_t\}, \{P_t\}, P_{max})$
+    \STATE $S_{RL} \gets$ RL\_greedy$(d, \mathcal{A}, \{p_t\}, \{P_t\}, P_{max})$
+    \STATE Compute costs and savings for all methods
+    \STATE Generate visualizations and reports
+\ENDFOR
+\STATE
+\STATE \textbf{Phase 4: Performance Analysis}
+\STATE Aggregate results across scenarios
+\STATE Statistical significance testing
+\STATE Sensitivity analysis on $P_{max}$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Reproducibility}
+
+All experiments are designed for full reproducibility:
+\begin{itemize}
+    \item Fixed random seeds (seed=42)
+    \item Standardized train-test splits
+    \item Documented hyperparameters
+    \item Version-controlled code
+    \item Saved model checkpoints
+    \item Deterministic optimization solvers
+\end{itemize}
+
+\section{Conclusion}
+
+This experimental setup provides a comprehensive framework for evaluating the proposed multi-agent appliance scheduling system. The combination of neural network forecasting, statistical profiling, and optimization techniques enables systematic analysis of energy cost reduction potential in smart homes.
+
+\section*{Acknowledgment}
+The authors would like to thank the anonymous reviewers for their valuable comments and suggestions.
+
+\begin{thebibliography}{00}
+\bibitem{b1} Author, ``Title,'' \textit{Journal}, vol. X, no. Y, pp. Z, Year.
+\end{thebibliography}
+
+\end{document}

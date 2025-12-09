@@ -1,0 +1,11 @@
+Code/
+Tests/
+__pycache__/
+*.pyc
+.DS_Store
+.env
+*.egg-info/
+MAS/agent4_pronto/
+MAS/Old/
+MAS/files/
+**/__pycache__/

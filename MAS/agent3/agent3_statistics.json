@@ -1,0 +1,21 @@
+{
+  "total_records": 100000,
+  "unique_appliances": 10,
+  "unique_homes": 500,
+  "date_range": {
+    "start": "2023-01-01",
+    "end": "2024-01-01"
+  },
+  "category_breakdown": {
+    "ESSENTIAL": 4,
+    "NECESSARY": 4,
+    "EXPENDABLE": 2,
+    "OTHER": 0
+  },
+  "schedulable_appliances": [
+    "Dishwasher",
+    "Washing Machine"
+  ],
+  "total_energy_observed": 149995.16,
+  "avg_energy_per_event": 1.4999516
+}

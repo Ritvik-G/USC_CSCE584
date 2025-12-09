@@ -1,0 +1,272 @@
+
+======================================================================
+AGENT 3: APPLIANCE PROFILING - STATISTICAL ANALYSIS REPORT
+======================================================================
+
+METHODOLOGY:
+- Data Source: Device-level consumption records
+- Analysis Type: Statistical aggregation and pattern identification
+- No machine learning used - pure descriptive statistics
+
+DATASET OVERVIEW:
+- Total Records: 100,000
+- Unique Appliances: 10
+- Unique Homes: 500
+- Date Range: 2023-01-01 to 2024-01-01
+- Total Energy Observed: 149995.16 kWh
+
+APPLIANCE CATEGORIES:
+- ESSENTIAL (always running/critical): 4 types
+- NECESSARY (regular use, limited flexibility): 4 types
+- EXPENDABLE (schedulable for optimization): 2 types
+- OTHER: 0 types
+
+SCHEDULABLE APPLIANCES:
+  - Dishwasher
+  - Washing Machine
+
+DETAILED APPLIANCE PROFILES:
+
+
+----------------------------------------------------------------------
+AIR CONDITIONING (ESSENTIAL)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 3.500 kWh per use
+  - Range: 2.000 - 5.000 kWh
+  - Std Dev: 0.866 kWh
+
+Power & Duration:
+  - Estimated Power: 3.49 kW
+  - Estimated Duration: 1.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 10067
+  - Peak Usage Hours: 23, 6, 15, 1, 10
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: 0.002
+
+
+----------------------------------------------------------------------
+COMPUTER (NECESSARY)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 1.095 kWh per use
+  - Range: 0.200 - 2.000 kWh
+  - Std Dev: 0.521 kWh
+
+Power & Duration:
+  - Estimated Power: 0.37 kW
+  - Estimated Duration: 3.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 9944
+  - Peak Usage Hours: 1, 19, 2, 13, 17
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: 0.002
+
+
+----------------------------------------------------------------------
+DISHWASHER (EXPENDABLE)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 1.103 kWh per use
+  - Range: 0.200 - 2.000 kWh
+  - Std Dev: 0.521 kWh
+
+Power & Duration:
+  - Estimated Power: 0.55 kW
+  - Estimated Duration: 2.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 10095
+  - Peak Usage Hours: 7, 12, 17, 13, 15
+  - Typical Hours: 
+
+Scheduling Information:
+  - Can be scheduled: YES
+  - Preferred Windows: [(18, 23)]
+  - Max Delay: 8 hours
+
+Environmental Factors:
+  - Temperature Correlation: -0.002
+
+
+----------------------------------------------------------------------
+FRIDGE (ESSENTIAL)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 0.298 kWh per use
+  - Range: 0.100 - 0.500 kWh
+  - Std Dev: 0.116 kWh
+
+Power & Duration:
+  - Estimated Power: 0.30 kW
+  - Estimated Duration: 24.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 9931
+  - Peak Usage Hours: 20, 3, 22, 19, 12
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: 0.015
+
+
+----------------------------------------------------------------------
+HEATER (ESSENTIAL)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 3.487 kWh per use
+  - Range: 2.000 - 5.000 kWh
+  - Std Dev: 0.866 kWh
+
+Power & Duration:
+  - Estimated Power: 3.48 kW
+  - Estimated Duration: 1.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 10018
+  - Peak Usage Hours: 20, 8, 15, 18, 4
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: -0.006
+
+
+----------------------------------------------------------------------
+LIGHTS (ESSENTIAL)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 1.087 kWh per use
+  - Range: 0.200 - 2.000 kWh
+  - Std Dev: 0.517 kWh
+
+Power & Duration:
+  - Estimated Power: 1.08 kW
+  - Estimated Duration: 1.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 10201
+  - Peak Usage Hours: 22, 24, 12, 19, 5
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: 0.000
+
+
+----------------------------------------------------------------------
+MICROWAVE (NECESSARY)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 1.101 kWh per use
+  - Range: 0.200 - 2.000 kWh
+  - Std Dev: 0.518 kWh
+
+Power & Duration:
+  - Estimated Power: 2.20 kW
+  - Estimated Duration: 0.50 hours
+
+Usage Patterns:
+  - Total Occurrences: 9947
+  - Peak Usage Hours: 24, 1, 20, 23, 7
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: -0.001
+
+
+----------------------------------------------------------------------
+OVEN (NECESSARY)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 1.103 kWh per use
+  - Range: 0.200 - 2.000 kWh
+  - Std Dev: 0.521 kWh
+
+Power & Duration:
+  - Estimated Power: 2.21 kW
+  - Estimated Duration: 0.50 hours
+
+Usage Patterns:
+  - Total Occurrences: 9939
+  - Peak Usage Hours: 14, 5, 22, 7, 17
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: -0.009
+
+
+----------------------------------------------------------------------
+TV (NECESSARY)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 1.097 kWh per use
+  - Range: 0.200 - 2.000 kWh
+  - Std Dev: 0.521 kWh
+
+Power & Duration:
+  - Estimated Power: 0.37 kW
+  - Estimated Duration: 3.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 9905
+  - Peak Usage Hours: 12, 5, 21, 22, 8
+  - Typical Hours: 
+
+Environmental Factors:
+  - Temperature Correlation: -0.007
+
+
+----------------------------------------------------------------------
+WASHING MACHINE (EXPENDABLE)
+----------------------------------------------------------------------
+Energy Consumption:
+  - Average: 1.101 kWh per use
+  - Range: 0.200 - 2.000 kWh
+  - Std Dev: 0.518 kWh
+
+Power & Duration:
+  - Estimated Power: 0.55 kW
+  - Estimated Duration: 2.00 hours
+
+Usage Patterns:
+  - Total Occurrences: 9953
+  - Peak Usage Hours: 19, 8, 12, 5, 4
+  - Typical Hours: 
+
+Scheduling Information:
+  - Can be scheduled: YES
+  - Preferred Windows: [(6, 10), (17, 22)]
+  - Max Delay: 12 hours
+
+Environmental Factors:
+  - Temperature Correlation: 0.005
+
+
+======================================================================
+INTERPRETATION:
+
+The profiling analysis identifies 2 appliances 
+that can be scheduled for energy cost optimization. These appliances account for a 
+significant portion of flexible household energy consumption.
+
+Essential appliances (Fridge, Heater, AC, Lights) cannot be scheduled and represent
+baseline household consumption that must be met regardless of electricity prices.
+
+The temporal usage patterns reveal clear peak hours for different appliance types,
+which can inform intelligent scheduling algorithms to shift expendable loads to
+off-peak, lower-cost time periods.
+
+APPLICATIONS:
+- Provides appliance energy profiles for cost calculation
+- Identifies schedulable vs. fixed loads
+- Defines temporal constraints for optimization algorithms
+- Enables household energy consumption estimation
+- Supports personalized scheduling based on appliance ownership
+
+======================================================================
