@@ -5,7 +5,7 @@ __pycache__/
 .DS_Store
 .env
 *.egg-info/
-MAS/agent4_pronto/
-MAS/Old/
-MAS/files/
+agent4_pronto/
+Old/
+files/
 **/__pycache__/
